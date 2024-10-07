@@ -9,7 +9,12 @@ import RegisterForm from "./components/auth/RegisterForm";
 import LoginForm from "./components/auth/LoginForm";
 import Hello from "./components/prectice/Hello";
 import SubjectData from "./components/SubjectsData";
-import PrivateRoute from "./components/PrivateRoute"; // Import PrivateRoute
+import PrivateRoute from "./components/PrivateRoute";
+import ProfessorsTable from "./components/ProfessorData";
+import AddGroup from "./components/AddGroup";
+import GroupTable from "./components/GroupData";
+import AddLab from "./components/AddLab";
+import LabList from "./components/LabData"; // Import PrivateRoute
 
 const App = () => {
   return (
@@ -27,6 +32,12 @@ const App = () => {
           <Route path="/subject/showdata" element={<PrivateRoute element={SubjectData} />}></Route>
           <Route path="/proffessor" element={<PrivateRoute element={AddProfessor} />}></Route>
           <Route path="/prectice" element={<PrivateRoute element={Prectice} />}></Route>
+          <Route path="/pro" element={<AddProfessor />}></Route>
+          <Route path="/prodata" element={<ProfessorsTable />}></Route>
+          <Route path="/group" element={<AddGroup />}></Route>
+          <Route path="/groupdata" element={<GroupTable />}></Route>
+          <Route path="/lab" element={<AddLab />}></Route>
+          <Route path="/labdata" element={<LabList />}></Route>
         </Routes>
       </div>
     </Router>
