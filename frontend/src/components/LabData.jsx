@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navbar from './shared/Navbar';
 
 const LabsTable = () => {
   const [labs, setLabs] = useState([]);
@@ -10,7 +11,7 @@ const LabsTable = () => {
   useEffect(() => {
     const fetchLabs = async () => {
       try {
-        const response = await axios.get('http://localhost:7000/api/lab');
+        const response = await axios.get('http://localhost:3000/api/lab');
         setLabs(response.data);
       } catch (err) {
         setError('Failed to fetch labs.');
@@ -33,7 +34,7 @@ const LabsTable = () => {
   // Handle delete lab
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:7000/api/lab/${id}`);
+      await axios.delete(`http://localhost:3000/api/lab/${id}`);
       setLabs(labs.filter(lab => lab._id !== id));
     } catch (err) {
       setError('Failed to delete lab.');
@@ -41,6 +42,8 @@ const LabsTable = () => {
   };
 
   return (
+    <>
+   <Navbar></Navbar>
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Labs List</h1>
 
@@ -70,7 +73,7 @@ const LabsTable = () => {
             <tr key={lab._id}>
               <td className="border border-gray-300 p-2">{lab.labName}</td>
               <td className="border border-gray-300 p-2">{lab.labCode}</td>
-              <td className="border border-gray-300 p-2">{lab.departmentName}</td>
+              <td className="border border-gray-300 p-2">{lab.name}</td>
               <td className="border border-gray-300 p-2">{lab.capacity}</td>
               <td className="border border-gray-300 p-2">{lab.resources.join(', ')}</td>
               <td className="border border-gray-300 p-2">
@@ -86,6 +89,7 @@ const LabsTable = () => {
         </tbody>
       </table>
     </div>
+    </>
   );
 };
 

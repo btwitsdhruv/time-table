@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import EditSubjectForm from './EditSubjectForm'; // Import the EditSubjectForm
 
 const SubjectManagement = () => {
   const [subjects, setSubjects] = useState([]); // Initial state as an empty array
-  const [searchTerm, setSearchTerm] = useState('');
+  const [isEditing, setIsEditing] = useState(false); // State to control the edit form visibility
+  const [currentSubjectId, setCurrentSubjectId] = useState(null); // State to store the currently editing subject ID
 
   // Fetch all subjects with populated professor data
   useEffect(() => {
@@ -12,9 +14,6 @@ const SubjectManagement = () => {
 
   const fetchSubjects = async () => {
     try {
-
-      // const response = await axios.get('http://localhost:3000/api/subjects');
-
       const token = localStorage.getItem("token");
        
       const response = await axios.get('http://localhost:3000/api/subjects', {
@@ -37,7 +36,7 @@ const SubjectManagement = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/subjects/${id}`);
+      await axios.delete(`http://localhost:3000/api/subjects/${id}`);
       fetchSubjects(); // Refresh the subjects list after deletion
     } catch (error) {
       console.error('Error deleting subject:', error);
@@ -45,27 +44,21 @@ const SubjectManagement = () => {
   };
 
   const handleEdit = (id) => {
-    // Handle edit logic
+    setCurrentSubjectId(id); // Set the ID of the subject to edit
+    setIsEditing(true); // Show the edit form
   };
 
-  // Filter subjects based on search input
-  const filteredSubjects = subjects.filter((subject) =>
-    subject.subjectName && subject.subjectName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleCloseEditForm = () => {
+    setIsEditing(false); // Hide the edit form
+    setCurrentSubjectId(null); // Reset the subject ID
+  };
+
+  const handleUpdate = () => {
+    fetchSubjects(); // Fetch updated subjects after editing
+  };
 
   return (
     <div className="container mx-auto p-4">
-      {/* Search Bar */}
-      <div className="mb-4">
-        <input
-          type="text"
-          className="w-full px-4 py-2 border rounded shadow-md"
-          placeholder="Search subjects..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
       {/* Subjects List */}
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto border-collapse">
@@ -73,45 +66,45 @@ const SubjectManagement = () => {
             <tr className="bg-gray-100">
               <th className="px-4 py-2 border font-medium text-left">Subject Code</th>
               <th className="px-4 py-2 border font-medium text-left">Subject Name</th>
-              <th className="px-4 py-2 border font-medium text-left">Abbreviation</th>
-              <th className="px-4 py-2 border font-medium text-left">Weekly Lectures</th>
-              <th className="px-4 py-2 border font-medium text-left">Theory Professors</th>
-              <th className="px-4 py-2 border font-medium text-left">Practical Professors</th>
+              <th className="px-4 py-2 border font-medium text-left">Credit Hours</th>
+              <th className="px-4 py-2 border font-medium text-left">Semester</th>
+              <th className="px-4 py-2 border font-medium text-left">Max Students</th>
+              <th className="px-4 py-2 border font-medium text-left">Subject Type</th>
+              <th className="px-4 py-2 border font-medium text-left">Department</th>
+              <th className="px-4 py-2 border font-medium text-left">Theory Professor</th>
+              <th className="px-4 py-2 border font-medium text-left">Practical Professor</th>
               <th className="px-4 py-2 border font-medium text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredSubjects.map((subject) => (
+            {subjects.map((subject) => (
               <tr key={subject._id} className="border-b">
-                <td className="px-4 py-2 border">{subject.subjectCode}</td>
-                <td className="px-4 py-2 border">{subject.subjectName}</td>
-                <td className="px-4 py-2 border">{subject.abbreviation}</td>
-                <td className="px-4 py-2 border">{subject.weeklyLectures}</td>
+                <td className="px-4 py-2 border">{subject.subject_code}</td>
+                <td className="px-4 py-2 border">{subject.subject_name}</td>
+                <td className="px-4 py-2 border">{subject.credit_hours}</td>
+                <td className="px-4 py-2 border">{subject.semester}</td>
+                <td className="px-4 py-2 border">{subject.max_students}</td>
+                <td className="px-4 py-2 border">{subject.subject_type}</td>
+                <td className="px-4 py-2 border">{subject.department?.name}</td>
+                <td className="px-4 py-2 border">{subject.theory_professor.firstName}</td>
+                <td className="px-4 py-2 border">{subject.practical_professor.firstName}</td>
                 <td className="px-4 py-2 border">
-                  {subject.theoryProfs.map((prof) => prof.firstName).join(', ')} {/* Theory Professors */}
-                </td>
-                <td className="px-4 py-2 border">
-                  {subject.practicalProfs.map((prof) => prof.firstName).join(', ')} {/* Practical Professors */}
-                </td>
-                <td className="px-4 py-2 border">
-                  <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded shadow-md mr-2"
-                    onClick={() => handleEdit(subject._id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-4 py-2 rounded shadow-md"
-                    onClick={() => handleDelete(subject._id)}
-                  >
-                    Delete
-                  </button>
+                  <button onClick={() => handleEdit(subject._id)} className="bg-yellow-500 text-white px-2 py-1 rounded mr-1">Edit</button>
+                  <button onClick={() => handleDelete(subject._id)} className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {/* Edit Subject Form */}
+      {isEditing && (
+        <EditSubjectForm
+          subjectId={currentSubjectId}
+          onClose={handleCloseEditForm}
+          onUpdate={handleUpdate}
+        />
+      )}
     </div>
   );
 };

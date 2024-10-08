@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';  // Import axios
+import Navbar from './shared/Navbar';
+import { Button } from './ui/button';
+import { Link } from "react-router-dom";
 
 const AddGroup = () => {
   const [groupName, setGroupName] = useState('');
@@ -13,7 +16,7 @@ const AddGroup = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get('http://localhost:7000/api/department');
+        const response = await axios.get('http://localhost:3000/api/department');
         setDepartments(response.data);
       } catch (err) {
         setError('Failed to fetch departments.');
@@ -33,7 +36,7 @@ const AddGroup = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:7000/api/groups', groupData);
+      const response = await axios.post('http://localhost:3000/api/groups', groupData);
 
       if (response.status === 201) {
         setSuccess('Group created successfully.');
@@ -49,6 +52,9 @@ const AddGroup = () => {
   };
 
   return (
+
+    <>
+  <Navbar></Navbar>
     <div className="flex items-center justify-center h-screen">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl"> {/* Adjusted width and centered */}
         <h1 className="text-2xl font-bold mb-4">Add New Group</h1>
@@ -95,16 +101,21 @@ const AddGroup = () => {
               ))}
             </select>
           </div>
-
+          <div className="flex justify-center items-center">
           <button
             type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+            className="bg-blue-500 text-white p-2 rounded mr-4"
           >
             Add Group
           </button>
+          <Button type="button"  className="bg-green-500 text-white p-2 rounded">
+          <Link to="/groupdata">Go to Show Data</Link>
+        </Button>
+        </div>
         </form>
       </div>
     </div>
+    </>
   );
 };
 

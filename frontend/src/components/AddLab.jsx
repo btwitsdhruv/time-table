@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
+import Navbar from './shared/Navbar'
+import { Button } from './ui/button';
+import { Link } from "react-router-dom";
 
 const AddLab = () => {
   const [labName, setLabName] = useState('');
@@ -15,7 +18,7 @@ const AddLab = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get('http://localhost:7000/api/department');
+        const response = await axios.get('http://localhost:3000/api/department');
         setDepartments(response.data);
       } catch (err) {
         setError('Failed to fetch departments.');
@@ -37,7 +40,7 @@ const AddLab = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:7000/api/labs', labData);
+      const response = await axios.post('http://localhost:3000/api/lab', labData);
 
       if (response.status === 201) {
         setSuccess('Lab created successfully.');
@@ -66,6 +69,8 @@ const AddLab = () => {
   };
 
   return (
+    <>
+   <Navbar></Navbar>
     <div className="container mx-auto p-6 max-w-lg">
       <h1 className="text-2xl font-bold mb-4">Add New Lab</h1>
 
@@ -145,14 +150,21 @@ const AddLab = () => {
           </select>
         </div>
 
+       
+        <div className="flex justify-center items-center">
         <button
           type="submit"
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+          className="bg-blue-500 text-white p-2 rounded mr-4"
         >
           Add Lab
         </button>
+        <Button type="button"  className="bg-green-500 text-white p-2 rounded">
+          <Link to="/labdata">Go to Show Data</Link>
+        </Button>
+        </div>
       </form>
     </div>
+    </>
   );
 };
 

@@ -41,29 +41,35 @@ function Navbar() {
         <div className="flex justify-between items-center py-4">
           {/* Logo / Brand Name */}
           <div className="text-xl font-bold text-gray-800 dark:text-white">
-            Timetable App
+          <Link to="/home">Timetable App</Link>  
           </div>
 
           {/* Main Nav Links */}
           <div className="hidden md:flex space-x-6">
-            <a href="/home" className="text-gray-600 dark:text-gray-200 hover:text-blue-500 mt-2">Home</a>
-            <a href="/schedule" className="text-gray-600 dark:text-gray-200 hover:text-blue-500 mt-2">Schedule</a>
+            {/* <a href="/home" className="text-gray-600 dark:text-gray-200 hover:text-blue-500 mt-2">Home</a> */}
+            {/* <a href="/schedule" className="text-gray-600 dark:text-gray-200 hover:text-blue-500 mt-2">Schedule</a> */}
 
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button variant="ghost" className="flex items-center space-x-2">
+                <Button variant="ghost" className="flex items-center space-x-4">
                   <span className="text-gray-600 dark:text-gray-200">Faculty Management</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem>
-                  <Link to="/subject">Add Subject</Link>
+                  <Link to="/subject">Subject</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Link to="/department">Add Departmentdata</Link>
+                  <Link to="/department">Departmentdata</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Link to="/professor">Add ProfessorData</Link>
+                  <Link to="/professor">ProfessorData</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/Lab">Labs</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/Group">Groups</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Navbar from "./shared/Navbar";
 
 const GroupTable = () => {
   const [groups, setGroups] = useState([]);
@@ -11,7 +12,7 @@ const GroupTable = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:7000/api/groups");
+        const response = await axios.get("http://localhost:3000/api/groups");
         setGroups(response.data);
         console.log(response.data);
       } catch (err) {
@@ -25,7 +26,7 @@ const GroupTable = () => {
   // Handle delete functionality
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:7000/api/groups/${id}`);
+      await axios.delete(`http://localhost:3000/api/groups/${id}`);
       setGroups(groups.filter((group) => group._id !== id)); // Remove the deleted group from state
       setSuccess("Group deleted successfully.");
     } catch (err) {
@@ -45,6 +46,10 @@ const GroupTable = () => {
   );
 
   return (
+
+    <>
+    
+    <Navbar></Navbar>
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Group Management</h1>
 
@@ -102,6 +107,7 @@ const GroupTable = () => {
         </tbody>
       </table>
     </div>
+    </>
   );
 };
 
