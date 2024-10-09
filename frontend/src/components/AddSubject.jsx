@@ -45,7 +45,12 @@ const AddSubject = () => {
 
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/department'); // Adjust endpoint as needed
+        const token = localStorage.getItem("token");
+        const response = await axios.get('http://localhost:3000/api/department', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }); // Adjust endpoint as needed
         setDepartments(response.data);
       } catch (error) {
         console.error("Error fetching departments:", error);
@@ -61,6 +66,8 @@ const AddSubject = () => {
     setError("");
 
     try {
+      const token = localStorage.getItem("token");
+
       const response = await axios.post("http://localhost:3000/api/subjects", {
         subject_code: subjectCode,
         subject_name: subjectName,
@@ -72,7 +79,12 @@ const AddSubject = () => {
         practical_professor: practicalProfessor,
         max_students: parseInt(maxStudents, 10),
         classroom,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`  // Include token in Authorization header
+        }
       });
+
 
       // Clear form after successful submission
       setSubjectCode("");
@@ -227,11 +239,11 @@ const AddSubject = () => {
           <Button type="submit" className="bg-blue-500 text-white p-2 rounded mr-4">
             Add Subject
           </Button>
-          <Button type="button"  className="bg-green-500 text-white p-2 rounded">
-          <Link to="/subject/showdata">Go to Show Data</Link>
-        </Button>
+          <Button type="button" className="bg-green-500 text-white p-2 rounded">
+            <Link to="/subject/showdata">Go to Show Data</Link>
+          </Button>
         </div>
-        
+
       </form>
     </div>
   );

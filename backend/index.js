@@ -26,13 +26,13 @@ const labScheduleRoutes = require('./routes/labScheduleRoutes');
 app.use('/api', authRoutes); // Public routes (like login and register)
 
 // Protect the routes using the middleware
-app.use('/api/professors', professorRoutes);
-app.use('/api/subjects', subjectRoutes);
+app.use('/api/professors',authenticateJWT, professorRoutes);
+app.use('/api/subjects', authenticateJWT,subjectRoutes);
 app.use('/api/timetables', authenticateJWT, timetableRoutes);
-app.use('/api/department', departmentRoutes);
-app.use('/api/groups', groupRoutes);
-app.use('/api/lab', labRoutes);
-app.use('/api/labsch', labScheduleRoutes);
+app.use('/api/department',authenticateJWT, departmentRoutes);
+app.use('/api/groups',authenticateJWT, groupRoutes);
+app.use('/api/lab', authenticateJWT,labRoutes);
+app.use('/api/labsch',authenticateJWT, labScheduleRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {

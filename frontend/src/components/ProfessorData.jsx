@@ -18,8 +18,13 @@ const ProfessorsTable = () => {
 
   // Fetch all professors
   const fetchProfessors = async () => {
+    const token = localStorage.getItem("token");
     try {
-      const response = await fetch('http://localhost:3000/api/professors');
+      const response = await fetch('http://localhost:3000/api/professors',{
+        headers: {
+        Authorization: `Bearer ${token}`  // Include token in Authorization header
+      }
+      });
       const data = await response.json();
       setProfessors(data);
     } catch (err) {
@@ -29,8 +34,13 @@ const ProfessorsTable = () => {
 
   // Fetch departments (assuming you have an API endpoint for this)
   const fetchDepartments = async () => {
+    const token = localStorage.getItem("token");
     try {
-      const response = await fetch('http://localhost:3000/api/department'); // Update the endpoint as necessary
+      const response = await fetch('http://localhost:3000/api/department',{
+        headers: {
+          Authorization: `Bearer ${token}` 
+        } 
+      }); // Update the endpoint as necessary
       const data = await response.json();
       setDepartments(data);
     } catch (err) {
@@ -40,9 +50,13 @@ const ProfessorsTable = () => {
 
   // Delete professor by ID
   const deleteProfessor = async (id) => {
+    const token = localStorage.getItem("token");
     try {
       await fetch(`http://localhost:3000/api/professors/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`  // Include token in Authorization header
+        }
       });
       setSuccess('Professor deleted successfully.');
       fetchProfessors(); // Refresh the list
@@ -67,11 +81,13 @@ const ProfessorsTable = () => {
   // Update professor
   const handleUpdate = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
     try {
       const response = await fetch(`http://localhost:3000/api/professors/${selectedProfessor._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(formData),
       });

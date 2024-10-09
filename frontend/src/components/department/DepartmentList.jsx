@@ -9,9 +9,9 @@ const DepartmentList = () => {
             const token = localStorage.getItem("token");  // Get the token from localStorage
     
             const response = await axios.get('http://localhost:3000/api/department', {
-                headers: {
-                    Authorization: `Bearer ${token}`  // Include token in Authorization header
-                }
+                    headers: {
+                        Authorization: `Bearer ${token}`  // Include token in Authorization header
+                    }
             });
     
             setDepartments(response.data);  // Set the fetched departments in the state

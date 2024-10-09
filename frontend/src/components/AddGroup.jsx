@@ -15,8 +15,13 @@ const AddGroup = () => {
   // Fetch departments when the component loads
   useEffect(() => {
     const fetchDepartments = async () => {
+      const token = localStorage.getItem("token");
       try {
-        const response = await axios.get('http://localhost:3000/api/department');
+        const response = await axios.get('http://localhost:3000/api/department',{
+          headers: {
+            Authorization: `Bearer ${token}`  // Include token in Authorization header
+          }
+        });
         setDepartments(response.data);
       } catch (err) {
         setError('Failed to fetch departments.');
@@ -36,7 +41,11 @@ const AddGroup = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/api/groups', groupData);
+      const token = localStorage.getItem("token");
+      const response = await axios.post('http://localhost:3000/api/groups', groupData, {
+        headers: {
+          Authorization: `Bearer ${token}`  // Include token in Authorization header
+        }});
 
       if (response.status === 201) {
         setSuccess('Group created successfully.');

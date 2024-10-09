@@ -35,13 +35,21 @@ const SubjectManagement = () => {
   };
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem("token");  // Get the token from localStorage
+  
     try {
-      await axios.delete(`http://localhost:3000/api/subjects/${id}`);
-      fetchSubjects(); // Refresh the subjects list after deletion
+      await axios.delete(`http://localhost:3000/api/subjects/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`  // Include token in Authorization header
+        }
+      });
+      
+      fetchSubjects();  // Refresh the subjects list after deletion
     } catch (error) {
       console.error('Error deleting subject:', error);
     }
   };
+  
 
   const handleEdit = (id) => {
     setCurrentSubjectId(id); // Set the ID of the subject to edit

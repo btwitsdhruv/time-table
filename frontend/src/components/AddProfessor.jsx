@@ -19,8 +19,13 @@ const CreateProfessorForm = () => {
 
   useEffect(() => {
     const fetchDepartments = async () => {
+      const token = localStorage.getItem("token");
       try {
-        const response = await fetch('http://localhost:3000/api/department'); // Adjust this URL as needed
+        const response = await fetch('http://localhost:3000/api/department',{
+          headers: {
+            Authorization: `Bearer ${token}`  // Include token in Authorization header
+          }
+        }); // Adjust this URL as needed
         const data = await response.json();
         if (response.ok) {
           setDepartments(data); // Set the department data
@@ -45,11 +50,13 @@ const CreateProfessorForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
     try {
       const response = await fetch('http://localhost:3000/api/professors', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });

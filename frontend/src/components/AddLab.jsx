@@ -17,8 +17,13 @@ const AddLab = () => {
   // Fetch departments when the component loads
   useEffect(() => {
     const fetchDepartments = async () => {
+      const token = localStorage.getItem("token");
       try {
-        const response = await axios.get('http://localhost:3000/api/department');
+        const response = await axios.get('http://localhost:3000/api/department',{
+          headers: {
+            Authorization: `Bearer ${token}`  // Include token in Authorization header
+          }
+        });
         setDepartments(response.data);
       } catch (err) {
         setError('Failed to fetch departments.');
@@ -31,6 +36,7 @@ const AddLab = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
     const labData = {
       labName,
       labCode,
@@ -40,7 +46,11 @@ const AddLab = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/api/lab', labData);
+      const response = await axios.post('http://localhost:3000/api/lab', labData, {
+        headers: {
+          Authorization: `Bearer ${token}`  // Include token in Authorization header
+        }
+      });
 
       if (response.status === 201) {
         setSuccess('Lab created successfully.');
@@ -55,7 +65,8 @@ const AddLab = () => {
     } catch (err) {
       setError('Something went wrong. Please try again.');
     }
-  };
+};
+
 
   // Handle resource input
   const handleResourceChange = (index, value) => {

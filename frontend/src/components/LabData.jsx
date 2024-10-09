@@ -10,8 +10,13 @@ const LabsTable = () => {
   // Fetch labs when the component loads
   useEffect(() => {
     const fetchLabs = async () => {
+      const token = localStorage.getItem("token");
       try {
-        const response = await axios.get('http://localhost:3000/api/lab');
+        const response = await axios.get('http://localhost:3000/api/lab',{
+          headers: {
+            Authorization: `Bearer ${token}`  // Include token in Authorization header
+          }
+        });
         setLabs(response.data);
       } catch (err) {
         setError('Failed to fetch labs.');

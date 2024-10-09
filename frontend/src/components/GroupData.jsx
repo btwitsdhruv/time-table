@@ -11,8 +11,13 @@ const GroupTable = () => {
   // Fetch all groups when the component loads
   useEffect(() => {
     const fetchGroups = async () => {
+      const token = localStorage.getItem("token");
       try {
-        const response = await axios.get("http://localhost:3000/api/groups");
+        const response = await axios.get("http://localhost:3000/api/groups",{
+          headers: {
+            Authorization: `Bearer ${token}`  // Include token in Authorization header
+          }
+        });
         setGroups(response.data);
         console.log(response.data);
       } catch (err) {
@@ -25,8 +30,13 @@ const GroupTable = () => {
 
   // Handle delete functionality
   const handleDelete = async (id) => {
+    const token = localStorage.getItem("token");
     try {
-      await axios.delete(`http://localhost:3000/api/groups/${id}`);
+      await axios.delete(`http://localhost:3000/api/groups/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`  // Include token in Authorization header
+        }
+      });
       setGroups(groups.filter((group) => group._id !== id)); // Remove the deleted group from state
       setSuccess("Group deleted successfully.");
     } catch (err) {
@@ -72,7 +82,7 @@ const GroupTable = () => {
           <tr className="bg-gray-100">
             <th className="px-4 py-2 border">Group Name</th>
             <th className="px-4 py-2 border">Group Code</th>
-            <th className="px-4 py-2 border">Department</th>
+            {/* <th className="px-4 py-2 border">Department</th> */}
             <th className="px-4 py-2 border">Actions</th>
           </tr>
         </thead>
@@ -82,7 +92,7 @@ const GroupTable = () => {
               <td className="px-4 py-2 border">{group.groupName}</td>
               <td className="px-4 py-2 border">{group.groupCode}</td>
 
-              <td className="px-4 py-2 border">{group.department.name}</td>
+              {/* <td className="px-4 py-2 border">{group.department.id}</td> */}
 
               <td className="px-4 py-2 border">
                 <button
